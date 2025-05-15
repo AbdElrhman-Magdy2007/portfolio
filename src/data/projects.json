@@ -1,0 +1,43 @@
+
+[
+  {
+    "id": 1,
+    "title": "E-Commerce Platform",
+    "description": "A full-featured online store with real-time inventory, customer accounts, and secure payment processing. Built for optimal performance and conversion rates.",
+    "image": "/placeholder.svg",
+    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Stripe", "Supabase"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "title": "SaaS Analytics Dashboard",
+    "description": "Real-time analytics dashboard for SaaS businesses. Features include user tracking, revenue metrics, and customizable reports with beautiful data visualizations.",
+    "image": "/placeholder.svg",
+    "tags": ["React", "TypeScript", "Recharts", "Zustand", "Tailwind CSS"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  },
+  {
+    "id": 3,
+    "title": "Content Management System",
+    "description": "A modern headless CMS built for content creators and developers. Features a user-friendly interface, robust API, and flexible content modeling.",
+    "image": "/placeholder.svg",
+    "tags": ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Tailwind CSS"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": true
+  },
+  {
+    "id": 4,
+    "title": "Task Management App",
+    "description": "A productivity tool for teams and individuals. Features include task assignment, progress tracking, and deadline management with beautiful UI.",
+    "image": "/placeholder.svg",
+    "tags": ["React", "TypeScript", "Zustand", "Tailwind CSS", "Framer Motion"],
+    "demoUrl": "#",
+    "githubUrl": "#",
+    "featured": false
+  }
+]
