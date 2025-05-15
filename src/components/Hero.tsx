@@ -74,18 +74,55 @@ const Hero = () => {
         type: "spring",
         stiffness: 120,
         damping: 15,
-        duration: 0.7
+        duration: 0.8
       }
     },
     hover: {
-      y: -10,
+      y: -12,
       transition: {
         duration: 0.3,
-        ease: "easeInOut",
-        yoyo: Infinity,
-        repeatDelay: 0.5
+        ease: "easeInOut"
+      }
+    },
+    float: {
+      y: [0, -10, 0],
+      transition: {
+        duration: 4,
+        repeat: Infinity,
+        ease: "easeInOut"
       }
     }
+  };
+  
+  // Motion settings for the 3D tilt effect on the profile image
+  const tiltSettings = {
+    rotate: [0, 5, 0, -5, 0],
+    transition: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+  };
+
+  // Sparkle animation for profile image click
+  const [sparkles, setSparkles] = React.useState<{ id: number, x: number, y: number }[]>([]);
+  
+  const addSparkle = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Create 12 sparkles with random positions around the click point
+    const newSparkles = Array.from({ length: 12 }, (_, i) => ({
+      id: Date.now() + i,
+      x: x + (Math.random() * 40 - 20), // Random position within 20px of click
+      y: y + (Math.random() * 40 - 20)
+    }));
+    
+    setSparkles([...sparkles, ...newSparkles]);
+    
+    // Remove sparkles after animation completes
+    setTimeout(() => {
+      setSparkles(prevSparkles => 
+        prevSparkles.filter(sparkle => !newSparkles.some(ns => ns.id === sparkle.id))
+      );
+    }, 600);
   };
 
   return (
@@ -98,32 +135,40 @@ const Hero = () => {
 
       <div className="container relative z-10">
         <motion.div 
-          className={`max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between ${dir === 'rtl' ? 'rtl' : ''}`}
+          className={`max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 ${dir === 'rtl' ? 'rtl' : ''}`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          {/* Profile Image - Only visible on larger screens */}
+          {/* Profile Image */}
           <motion.div 
-            className="lg:w-2/5 order-2 lg:order-1 mt-10 lg:mt-0"
-            variants={imageVariants}
-            whileHover="hover"
+            className="lg:w-2/5 w-full order-2 lg:order-1 mt-10 lg:mt-0 flex justify-center lg:justify-start"
+            variants={itemVariants}
           >
-            <div className="relative mx-auto lg:mx-0 w-64 h-64 md:w-80 md:h-80">
-              {/* Placeholder image with gradient border */}
-              <div className="w-full h-full rounded-full overflow-hidden border-4 border-primary p-1 shadow-xl">
-                <div className="w-full h-full rounded-full overflow-hidden bg-gray-300">
+            <motion.div 
+              className="relative"
+              variants={imageVariants}
+              whileHover="hover"
+              animate={["visible", "float"]}
+              onClick={addSparkle}
+            >
+              <motion.div 
+                className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 bg-gradient-to-r from-primary to-secondary p-1"
+                animate={tiltSettings}
+                style={{ perspective: 1000 }}
+              >
+                <div className="w-full h-full rounded-full overflow-hidden shadow-xl">
                   <img 
                     src="/placeholder.svg" 
                     alt="Abdelrahman Magdy"
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </div>
+              </motion.div>
               
               {/* Floating elements around the image */}
               <motion.div 
-                className="absolute -top-4 -right-4 w-16 h-16 bg-secondary/30 rounded-full backdrop-blur-md"
+                className="absolute -top-4 -right-4 w-16 h-16 bg-secondary/40 rounded-full backdrop-blur-md"
                 animate={{ 
                   y: [0, -10, 0],
                   rotate: [0, 10, 0]
@@ -136,7 +181,7 @@ const Hero = () => {
               ></motion.div>
               
               <motion.div 
-                className="absolute -bottom-6 -left-6 w-20 h-20 bg-primary/30 rounded-full backdrop-blur-md"
+                className="absolute -bottom-6 -left-6 w-20 h-20 bg-primary/40 rounded-full backdrop-blur-md"
                 animate={{ 
                   y: [0, 10, 0],
                   rotate: [0, -10, 0]
@@ -147,7 +192,18 @@ const Hero = () => {
                   ease: "easeInOut"
                 }}
               ></motion.div>
-            </div>
+              
+              {/* Sparkle effect on click */}
+              {sparkles.map(sparkle => (
+                <motion.div
+                  key={sparkle.id}
+                  className="absolute w-2 h-2 bg-gradient-to-r from-primary to-secondary rounded-full"
+                  initial={{ scale: 0, opacity: 1, x: sparkle.x, y: sparkle.y }}
+                  animate={{ scale: 1.5, opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                />
+              ))}
+            </motion.div>
           </motion.div>
 
           {/* Text Content */}

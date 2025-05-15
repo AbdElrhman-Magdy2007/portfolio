@@ -184,6 +184,21 @@
       opacity: 0; 
     }
   }
+  
+  /* Enhanced sparkle effect */
+  .sparkle {
+    position: absolute;
+    pointer-events: none;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    animation: sparkle-fade 0.8s forwards;
+  }
+  
+  @keyframes sparkle-fade {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
 }
 
 /* Animations */
@@ -217,6 +232,11 @@
   50% { transform: scale(1); opacity: 1; }
 }
 
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -239,6 +259,10 @@
 
 .animate-sparkle {
   animation: sparkle 0.8s forwards;
+}
+
+.animate-ripple {
+  animation: ripple 0.8s forwards;
 }
 
 .delay-100 { animation-delay: 0.1s; }
