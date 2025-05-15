@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, ArrowDown } from 'lucide-react';
 import { useLanguage } from './LanguageProvider';
 import projectsData from '../data/projects.json';
+import { Link } from 'react-router-dom';
 
 const Projects = () => {
   const { t, language, dir } = useLanguage();
@@ -191,31 +192,34 @@ const Projects = () => {
             >
               <Button 
                 className="btn-primary rounded-full px-8 py-6 text-lg font-medium relative overflow-hidden group"
-                onClick={() => window.location.href = '/projects'}
+                asChild
               >
-                {t('projects.viewAll')}
-                
-                {/* Glow effect on hover */}
-                <span className="absolute top-0 left-0 w-full h-full">
-                  <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
-                </span>
-                
-                {/* Particle trail effect */}
-                {particles.map((particle) => (
-                  <motion.span
-                    key={particle.id}
-                    className="absolute w-2 h-2 rounded-full bg-secondary"
-                    initial={{ opacity: 0.8, scale: 1, x: particle.x, y: particle.y }}
-                    animate={{
-                      opacity: 0,
-                      scale: 0,
-                      x: particle.x + (Math.random() * 60 - 30),
-                      y: particle.y + (Math.random() * 60 - 30)
-                    }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                  />
-                ))}
+                <Link to="/projects">
+                  {t('projects.viewAll')}
+                  <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
+                  
+                  {/* Glow effect on hover */}
+                  <span className="absolute top-0 left-0 w-full h-full">
+                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
+                  </span>
+                </Link>
               </Button>
+              
+              {/* Particle trail effect */}
+              {particles.map((particle) => (
+                <motion.span
+                  key={particle.id}
+                  className="absolute w-2 h-2 rounded-full bg-secondary"
+                  initial={{ opacity: 0.8, scale: 1, x: particle.x, y: particle.y }}
+                  animate={{
+                    opacity: 0,
+                    scale: 0,
+                    x: particle.x + (Math.random() * 60 - 30),
+                    y: particle.y + (Math.random() * 60 - 30)
+                  }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                />
+              ))}
             </motion.div>
           </motion.div>
         </motion.div>

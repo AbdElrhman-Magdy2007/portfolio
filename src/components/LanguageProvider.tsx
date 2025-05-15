@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext } from 'react';
 
 type Language = 'en' | 'ar' | 'fr' | 'es';
@@ -29,6 +28,7 @@ const translations = {
     'projects.viewAll': 'View All Projects',
     'projects.searchPlaceholder': 'Search projects...',
     'projects.loadMore': 'Load More',
+    'projects.loading': 'Loading...',
     'projects.liveDemo': 'Live Demo',
     'projects.github': 'GitHub',
     'projects.filterAll': 'All',
@@ -39,6 +39,12 @@ const translations = {
     'projects.sortOldest': 'Oldest First',
     'projects.sortAZ': 'A-Z',
     'projects.sortZA': 'Z-A',
+    'projects.noResults': 'No projects match your search criteria',
+    'projects.resetFilters': 'Reset Filters',
+    'projects.title': 'My Projects Showcase',
+    'projects.subtitle': 'Discover my portfolio of innovative, scalable, and visually exquisite web solutions',
+    'projects.readyToHire': 'Ready to bring your vision to life? Let\'s collaborate!',
+    'projects.hireCTA': 'Hire Me',
     // Add more translations as needed
   },
   ar: {
@@ -59,6 +65,7 @@ const translations = {
     'projects.viewAll': 'عرض جميع المشاريع',
     'projects.searchPlaceholder': 'ابحث عن مشروع...',
     'projects.loadMore': 'تحميل المزيد',
+    'projects.loading': 'جاري التحميل...',
     'projects.liveDemo': 'عرض حي',
     'projects.github': 'جيثب',
     'projects.filterAll': 'الكل',
@@ -69,6 +76,12 @@ const translations = {
     'projects.sortOldest': 'الأقدم أولاً',
     'projects.sortAZ': 'أ-ي',
     'projects.sortZA': 'ي-أ',
+    'projects.noResults': 'لا توجد مشاريع تطابق معايير البحث',
+    'projects.resetFilters': 'إعادة ضبط المرشحات',
+    'projects.title': 'معرض مشاريعي',
+    'projects.subtitle': 'اكتشف محفظتي من حلول الويب المبتكرة والقابلة للتطوير والجميلة بصريًا',
+    'projects.readyToHire': 'هل أنت مستعد لتحويل رؤيتك إلى واقع؟ دعنا نتعاون!',
+    'projects.hireCTA': 'وظفني',
     // Add more translations as needed
   },
   fr: {
@@ -89,6 +102,7 @@ const translations = {
     'projects.viewAll': 'Voir tous les projets',
     'projects.searchPlaceholder': 'Rechercher des projets...',
     'projects.loadMore': 'Charger plus',
+    'projects.loading': 'Chargement...',
     'projects.liveDemo': 'Démo en direct',
     'projects.github': 'GitHub',
     'projects.filterAll': 'Tous',
@@ -99,6 +113,12 @@ const translations = {
     'projects.sortOldest': 'Plus ancien',
     'projects.sortAZ': 'A-Z',
     'projects.sortZA': 'Z-A',
+    'projects.noResults': 'Aucun projet ne correspond à vos critères de recherche',
+    'projects.resetFilters': 'Réinitialiser les filtres',
+    'projects.title': 'Vitrine de Mes Projets',
+    'projects.subtitle': 'Découvrez mon portfolio de solutions web innovantes, évolutives et visuellement exquises',
+    'projects.readyToHire': 'Prêt à donner vie à votre vision? Collaborons!',
+    'projects.hireCTA': 'Engagez-moi',
     // Add more translations as needed
   },
   es: {
@@ -119,6 +139,7 @@ const translations = {
     'projects.viewAll': 'Ver todos los proyectos',
     'projects.searchPlaceholder': 'Buscar proyectos...',
     'projects.loadMore': 'Cargar más',
+    'projects.loading': 'Cargando...',
     'projects.liveDemo': 'Demo en vivo',
     'projects.github': 'GitHub',
     'projects.filterAll': 'Todos',
@@ -129,6 +150,12 @@ const translations = {
     'projects.sortOldest': 'Más antiguos',
     'projects.sortAZ': 'A-Z',
     'projects.sortZA': 'Z-A',
+    'projects.noResults': 'Ningún proyecto coincide con tus criterios de búsqueda',
+    'projects.resetFilters': 'Reiniciar filtros',
+    'projects.title': 'Exposición de Mis Proyectos',
+    'projects.subtitle': 'Descubre mi portafolio de soluciones web innovadoras, escalables y visualmente exquisitas',
+    'projects.readyToHire': '¿Listo para dar vida a tu visión? ¡Colaboremos!',
+    'projects.hireCTA': 'Contrátame',
     // Add more translations as needed
   }
 };
