@@ -3,8 +3,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 
 const Hero = () => {
+  const { t, language, dir } = useLanguage();
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -26,6 +29,25 @@ const Hero = () => {
       }
     }
   };
+  
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.6, 0.05, 0.01, 0.9]
+      }
+    },
+    hover: {
+      scale: 1.05,
+      transition: { type: 'spring', stiffness: 400 }
+    },
+    tap: {
+      scale: 0.95
+    }
+  };
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
@@ -37,36 +59,49 @@ const Hero = () => {
 
       <div className="container relative z-10">
         <motion.div 
-          className="max-w-3xl mx-auto text-center"
+          className={`max-w-3xl mx-auto text-center ${dir === 'rtl' ? 'rtl' : ''}`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <motion.div variants={itemVariants} className="mb-6 inline-block">
             <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium">
-              👋 Welcome, I'm Abdelrahman Magdy
+              👋 {t('hero.greeting')} Abdelrahman Magdy
             </span>
           </motion.div>
 
           <motion.h1 variants={itemVariants} className="mb-6 leading-tight">
-            A Visionary Web Developer Crafting{" "}
-            <span className="highlight">Lightning-Fast</span>,{" "}
-            <span className="highlight">Scalable</span>, and{" "}
-            <span className="highlight">Visually Exquisite</span> Web Experiences
+            {t('hero.tagline')}{" "}
+            <span className="highlight">{t('hero.highlight1')}</span>,{" "}
+            <span className="highlight">{t('hero.highlight2')}</span>, {language === 'ar' ? 'و' : 'and'}{" "}
+            <span className="highlight">{t('hero.highlight3')}</span> {t('hero.subtext')}
           </motion.h1>
 
-          <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+          <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-reveal-text delay-300">
             Transform Your Ideas into Digital Masterpieces with React, Next.js, and TypeScript!
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button className="btn-primary group">
-              Discover My Work
-              <ArrowDown className="ml-2 group-hover:translate-y-1 transition-transform" size={18} />
-            </Button>
-            <Button variant="outline" className="btn-secondary">
-              Download CV
-            </Button>
+          <motion.div variants={itemVariants} className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
+            <motion.div
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
+              <Button className="btn-primary group">
+                {t('hero.cta1')}
+                <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
+              </Button>
+            </motion.div>
+            
+            <motion.div
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+            >
+              <Button variant="outline" className="btn-secondary">
+                {t('hero.cta2')}
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
         
