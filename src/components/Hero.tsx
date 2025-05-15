@@ -8,6 +8,17 @@ import { useLanguage } from './LanguageProvider';
 const Hero = () => {
   const { t, language, dir } = useLanguage();
   
+  // Determine the greeting based on the current language
+  const getGreeting = () => {
+    switch (language) {
+      case 'en': return "Welcome, I'm";
+      case 'ar': return "مرحبًا، أنا";
+      case 'fr': return "Bonjour, je suis";
+      case 'es': return "Hola, soy";
+      default: return "Welcome, I'm";
+    }
+  };
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,11 +52,39 @@ const Hero = () => {
       }
     },
     hover: {
-      scale: 1.05,
-      transition: { type: 'spring', stiffness: 400 }
+      scale: 1.15,
+      boxShadow: "0 0 15px rgba(99, 102, 241, 0.6)",
+      transition: { 
+        type: 'spring', 
+        stiffness: 400
+      }
     },
     tap: {
       scale: 0.95
+    }
+  };
+
+  // Animation for profile image
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 15,
+        duration: 0.7
+      }
+    },
+    hover: {
+      y: -10,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut",
+        yoyo: Infinity,
+        repeatDelay: 0.5
+      }
     }
   };
 
@@ -59,48 +98,131 @@ const Hero = () => {
 
       <div className="container relative z-10">
         <motion.div 
-          className={`max-w-3xl mx-auto text-center ${dir === 'rtl' ? 'rtl' : ''}`}
+          className={`max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between ${dir === 'rtl' ? 'rtl' : ''}`}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants} className="mb-6 inline-block">
-            <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium">
-              👋 {t('hero.greeting')} Abdelrahman Magdy
-            </span>
+          {/* Profile Image - Only visible on larger screens */}
+          <motion.div 
+            className="lg:w-2/5 order-2 lg:order-1 mt-10 lg:mt-0"
+            variants={imageVariants}
+            whileHover="hover"
+          >
+            <div className="relative mx-auto lg:mx-0 w-64 h-64 md:w-80 md:h-80">
+              {/* Placeholder image with gradient border */}
+              <div className="w-full h-full rounded-full overflow-hidden border-4 border-primary p-1 shadow-xl">
+                <div className="w-full h-full rounded-full overflow-hidden bg-gray-300">
+                  <img 
+                    src="/placeholder.svg" 
+                    alt="Abdelrahman Magdy"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+              
+              {/* Floating elements around the image */}
+              <motion.div 
+                className="absolute -top-4 -right-4 w-16 h-16 bg-secondary/30 rounded-full backdrop-blur-md"
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: [0, 10, 0]
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 5,
+                  ease: "easeInOut"
+                }}
+              ></motion.div>
+              
+              <motion.div 
+                className="absolute -bottom-6 -left-6 w-20 h-20 bg-primary/30 rounded-full backdrop-blur-md"
+                animate={{ 
+                  y: [0, 10, 0],
+                  rotate: [0, -10, 0]
+                }}
+                transition={{ 
+                  repeat: Infinity, 
+                  duration: 4,
+                  ease: "easeInOut"
+                }}
+              ></motion.div>
+            </div>
           </motion.div>
 
-          <motion.h1 variants={itemVariants} className="mb-6 leading-tight">
-            {t('hero.tagline')}{" "}
-            <span className="highlight">{t('hero.highlight1')}</span>,{" "}
-            <span className="highlight">{t('hero.highlight2')}</span>, {language === 'ar' ? 'و' : 'and'}{" "}
-            <span className="highlight">{t('hero.highlight3')}</span> {t('hero.subtext')}
-          </motion.h1>
-
-          <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto animate-reveal-text delay-300">
-            Transform Your Ideas into Digital Masterpieces with React, Next.js, and TypeScript!
-          </motion.p>
-
-          <motion.div variants={itemVariants} className={`flex flex-col sm:flex-row items-center justify-center gap-4 ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
-            <motion.div
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-            >
-              <Button className="btn-primary group">
-                {t('hero.cta1')}
-                <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
-              </Button>
+          {/* Text Content */}
+          <motion.div 
+            className="lg:w-3/5 text-center lg:text-left order-1 lg:order-2"
+            variants={containerVariants}
+          >
+            <motion.div variants={itemVariants} className="mb-6 inline-block">
+              <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium">
+                👋 {getGreeting()}
+              </span>
             </motion.div>
-            
-            <motion.div
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
+
+            <motion.h1 variants={itemVariants} className="mb-6 leading-tight">
+              Abdelrahman Magdy
+            </motion.h1>
+
+            <motion.h2 variants={itemVariants} className="mb-6 text-2xl md:text-3xl font-medium leading-relaxed">
+              {t('hero.tagline')}{" "}
+              <span className="highlight">{t('hero.highlight1')}</span>,{" "}
+              <span className="highlight">{t('hero.highlight2')}</span>, {language === 'ar' ? 'و' : language === 'fr' ? 'et' : language === 'es' ? 'y' : 'and'}{" "}
+              <span className="highlight">{t('hero.highlight3')}</span> {t('hero.subtext')}
+            </motion.h2>
+
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 animate-reveal-text delay-300">
+              Transform Your Ideas into Digital Masterpieces with React, Next.js, and TypeScript!
+            </motion.p>
+
+            <motion.div 
+              variants={itemVariants} 
+              className={`flex flex-col sm:flex-row items-center gap-4 ${dir === 'rtl' ? 'lg:justify-end' : 'lg:justify-start'} justify-center ${dir === 'rtl' ? 'sm:flex-row-reverse' : ''}`}
             >
-              <Button variant="outline" className="btn-secondary">
-                {t('hero.cta2')}
-              </Button>
+              <motion.div
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <Button className="btn-primary group relative overflow-hidden">
+                  {t('hero.cta1')}
+                  <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
+                  
+                  {/* Ripple effect on hover */}
+                  <span className="absolute top-0 left-0 w-full h-full">
+                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
+                  </span>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <Button variant="outline" className="btn-secondary group relative overflow-hidden">
+                  {t('hero.cta2')}
+                  
+                  {/* Sparkle effect on hover */}
+                  <span className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100">
+                    {[...Array(5)].map((_, i) => (
+                      <span 
+                        key={i} 
+                        className="particle absolute w-1 h-1 rounded-full bg-secondary"
+                        style={{
+                          top: `${Math.random() * 100}%`,
+                          left: `${Math.random() * 100}%`,
+                          '--x': `${(Math.random() * 60 - 30)}px`,
+                          '--y': `${(Math.random() * 60 - 30)}px`,
+                          animationDelay: `${i * 0.1}s`,
+                          animationDuration: `${0.5 + Math.random()}s`
+                        } as React.CSSProperties}
+                      />
+                    ))}
+                  </span>
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         </motion.div>

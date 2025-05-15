@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Github } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 import projectsData from '../data/projects.json';
 
 const Projects = () => {
+  const { t, language, dir } = useLanguage();
   const featuredProjects = projectsData.filter(project => project.featured);
 
   // Animation variants
@@ -28,8 +30,31 @@ const Projects = () => {
     }
   };
 
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring",
+        stiffness: 120,
+        damping: 12,
+        duration: 0.6 
+      }
+    },
+    hover: { 
+      scale: 1.15, 
+      boxShadow: "0 0 15px rgba(99, 102, 241, 0.6)",
+      transition: { duration: 0.3 }
+    },
+    tap: { 
+      scale: 0.95,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
-    <section id="projects" className="py-20 relative">
+    <section id="projects" className="py-20 relative overflow-hidden">
       <div className="container px-4 mx-auto">
         <motion.div
           initial="hidden"
@@ -45,16 +70,17 @@ const Projects = () => {
             <div className="h-1 w-24 bg-secondary mx-auto mt-6"></div>
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             {featuredProjects.map((project) => (
               <motion.div
                 key={project.id}
                 variants={itemVariants}
                 whileHover={{ 
-                  y: -8,
+                  y: -10,
+                  boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                   transition: { type: "spring", stiffness: 200 }
                 }}
-                className="glass-card overflow-hidden"
+                className="glass-card overflow-hidden border border-white/5 hover:border-secondary/30 transition-all duration-300"
               >
                 <Card className="border-0 bg-transparent h-full">
                   <div className="relative overflow-hidden group">
@@ -94,13 +120,49 @@ const Projects = () => {
             ))}
           </motion.div>
 
-          <motion.div variants={itemVariants} className="text-center">
-            <Button className="btn-primary">
-              View All Projects
-            </Button>
+          <motion.div 
+            variants={itemVariants} 
+            className="text-center"
+          >
+            <motion.div
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className="inline-block"
+            >
+              <Button 
+                className="btn-primary rounded-full px-8 py-6 text-lg font-medium relative overflow-hidden group"
+                onClick={() => window.location.href = '/projects'}
+              >
+                {t('projects.viewAll')}
+                {/* Sparkle effect on hover */}
+                <span className="absolute top-0 left-0 w-full h-full">
+                  <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
+                </span>
+                {/* Particle trail - this is just a visual effect, actual particles would be added with JS */}
+                <span className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100">
+                  {[...Array(5)].map((_, i) => (
+                    <span 
+                      key={i} 
+                      className="particle absolute w-1 h-1 rounded-full bg-secondary"
+                      style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        animationDelay: `${i * 0.1}s`,
+                        animationDuration: `${0.5 + Math.random()}s`
+                      }}
+                    />
+                  ))}
+                </span>
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Background elements */}
+      <div className="absolute top-1/2 left-0 w-40 h-40 bg-secondary/10 rounded-full filter blur-3xl opacity-30"></div>
+      <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-primary/10 rounded-full filter blur-3xl opacity-30"></div>
     </section>
   );
 };

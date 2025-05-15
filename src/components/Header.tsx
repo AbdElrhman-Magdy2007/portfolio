@@ -12,7 +12,7 @@ const Header = () => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   
   const { theme, toggleTheme } = useTheme();
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage, t, dir } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,7 +92,7 @@ const Header = () => {
         isScrolled ? 'py-3 backdrop-blur-lg bg-background/80' : 'py-5 bg-transparent'
       }`}
     >
-      <div className={`container flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+      <div className={`container flex items-center justify-between ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
         {/* Logo */}
         <motion.a href="#home" className="flex items-center" variants={logoVariants}>
           <h1 className="text-xl md:text-2xl font-bold font-heading">
@@ -119,7 +119,7 @@ const Header = () => {
         </motion.a>
 
         {/* Desktop Navigation */}
-        <nav className={`hidden md:flex items-center space-x-6 ${language === 'ar' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <nav className={`hidden md:flex items-center space-x-6 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
           {navItems.map((item) => (
             <motion.a 
               key={item.name}
@@ -131,7 +131,7 @@ const Header = () => {
             </motion.a>
           ))}
           
-          <div className={`flex items-center space-x-3 ${language === 'ar' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+          <div className={`flex items-center space-x-3 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
             <motion.button 
               onClick={toggleTheme} 
               className="theme-toggle"
@@ -165,7 +165,7 @@ const Header = () => {
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {languages.map((lang, index) => (
+                  {languages.map((lang) => (
                     <div 
                       key={lang.code}
                       className={`language-item ${language === lang.code ? 'text-primary' : ''}`}
@@ -191,7 +191,7 @@ const Header = () => {
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className={`md:hidden flex items-center space-x-3 ${language === 'ar' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <div className={`md:hidden flex items-center space-x-3 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
           <button 
             onClick={toggleTheme} 
             className="p-2 rounded-full hover:bg-white/10 transition-colors"
@@ -218,7 +218,7 @@ const Header = () => {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           >
-            <nav className={`flex flex-col space-y-4 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+            <nav className={`flex flex-col space-y-4 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
               {navItems.map((item) => (
                 <a 
                   key={item.name}
@@ -239,7 +239,11 @@ const Header = () => {
                   className="flex items-center space-x-2 text-base font-medium hover:text-primary transition-colors w-full"
                 >
                   <Globe size={18} />
-                  <span>{language === 'en' ? 'English' : language === 'ar' ? 'العربية' : language === 'fr' ? 'Français' : 'Español'}</span>
+                  <span>
+                    {language === 'en' ? 'English' : 
+                     language === 'ar' ? 'العربية' : 
+                     language === 'fr' ? 'Français' : 'Español'}
+                  </span>
                 </button>
                 
                 {isLanguageMenuOpen && (
