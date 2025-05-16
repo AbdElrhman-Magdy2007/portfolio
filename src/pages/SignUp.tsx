@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -67,8 +66,7 @@ const SignUp = () => {
       return;
     }
 
-    // In a real app, we would call Supabase auth here
-    // For now, we'll just show a success toast and redirect
+    // In a real app, we would implement authentication here
     try {
       console.log('Sign up data:', data);
       

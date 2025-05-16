@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 /**
  * Enhanced authentication hook with persistent state and advanced features
- * This would ideally connect to Supabase or another backend service
+ * This would ideally connect to  or another backend service
  */
 export const useAuth = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

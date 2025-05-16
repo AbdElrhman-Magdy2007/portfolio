@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -60,7 +59,7 @@ const Settings = () => {
     try {
       console.log('Settings data:', data);
       
-      // In a real app, we would update the user settings in Supabase
+      // In a real app, we would update the user settings in your backend
       
       toast({
         title: "Success!",

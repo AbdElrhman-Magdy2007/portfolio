@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +20,7 @@ import Footer from '@/components/Footer';
 import { toast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-// Mock user data - in a real app, this would come from Supabase or a server
+// Mock user data - in a real app, this would come from your backend server
 const mockUser = {
   id: '1',
   name: 'Abdelrahman Magdy',
@@ -72,7 +71,7 @@ const Profile = () => {
     try {
       console.log('Profile update data:', data);
       
-      // In a real app, we would update the user profile in Supabase
+      // In a real app, we would update the user profile in your backend
       
       toast({
         title: "Success!",

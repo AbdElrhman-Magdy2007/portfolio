@@ -34,7 +34,7 @@ const Services = () => {
     {
       icon: <Languages className="h-10 w-10 text-primary" />,
       title: 'Complex Integrations',
-      description: 'Seamlessly integrate APIs (e.g., Stripe, Supabase) for advanced functionality and features.'
+      description: 'Seamlessly integrate APIs (e.g., Stripe ) for advanced functionality and features.'
     }
   ];
 

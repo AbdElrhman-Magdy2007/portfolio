@@ -1,11 +1,10 @@
-
 [
   {
     "id": 1,
     "title": "E-Commerce Platform",
     "description": "A full-featured online store with real-time inventory, customer accounts, and secure payment processing. Built for optimal performance and conversion rates. Features include product search, filtering, cart management, and a streamlined checkout process.",
     "image": "/placeholder.svg",
-    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Stripe", "Supabase"],
+    "tags": ["Next.js", "TypeScript", "Tailwind CSS", "Stripe"],
     "demoUrl": "#",
     "githubUrl": "#",
     "featured": true,
