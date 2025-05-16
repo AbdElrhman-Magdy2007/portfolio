@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
@@ -59,12 +58,9 @@ const Hero = () => {
         stiffness: 400
       }
     },
-    tap: {
-      scale: 0.95
-    }
+    tap: { scale: 0.95 }
   };
 
-  // Animation for profile image
   const imageVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: {
@@ -94,33 +90,29 @@ const Hero = () => {
     }
   };
   
-  // Motion settings for the 3D tilt effect on the profile image
   const tiltSettings = {
     rotate: [0, 5, 0, -5, 0],
     transition: { duration: 10, repeat: Infinity, ease: "easeInOut" }
   };
 
-  // Sparkle animation for profile image click
-  const [sparkles, setSparkles] = React.useState<{ id: number, x: number, y: number }[]>([]);
-  
-  const addSparkle = (e: React.MouseEvent) => {
+  const [sparkles, setSparkles] = React.useState([]);
+
+  const addSparkle = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    // Create 12 sparkles with random positions around the click point
     const newSparkles = Array.from({ length: 12 }, (_, i) => ({
       id: Date.now() + i,
-      x: x + (Math.random() * 40 - 20), // Random position within 20px of click
+      x: x + (Math.random() * 40 - 20),
       y: y + (Math.random() * 40 - 20)
     }));
     
-    setSparkles([...sparkles, ...newSparkles]);
+    setSparkles(prev => [...prev, ...newSparkles]);
     
-    // Remove sparkles after animation completes
     setTimeout(() => {
-      setSparkles(prevSparkles => 
-        prevSparkles.filter(sparkle => !newSparkles.some(ns => ns.id === sparkle.id))
+      setSparkles(prev => 
+        prev.filter(sparkle => !newSparkles.some(ns => ns.id === sparkle.id))
       );
     }, 600);
   };
@@ -142,7 +134,7 @@ const Hero = () => {
         >
           {/* Profile Image */}
           <motion.div 
-            className="lg:w-2/5 w-full order-2 lg:order-1 mt-10 lg:mt-0 flex justify-center lg:justify-start"
+            className="lg:w-2/5 w-full order-1 lg:order-2 mt-10 lg:mt-0 flex justify-center lg:justify-end"
             variants={itemVariants}
           >
             <motion.div 
@@ -166,7 +158,6 @@ const Hero = () => {
                 </div>
               </motion.div>
               
-              {/* Floating elements around the image */}
               <motion.div 
                 className="absolute -top-4 -right-4 w-16 h-16 bg-secondary/40 rounded-full backdrop-blur-md"
                 animate={{ 
@@ -193,7 +184,6 @@ const Hero = () => {
                 }}
               ></motion.div>
               
-              {/* Sparkle effect on click */}
               {sparkles.map(sparkle => (
                 <motion.div
                   key={sparkle.id}
@@ -208,7 +198,7 @@ const Hero = () => {
 
           {/* Text Content */}
           <motion.div 
-            className="lg:w-3/5 text-center lg:text-left order-1 lg:order-2"
+            className="lg:w-3/5 w-full order-2 lg:order-1 text-center lg:text-left"
             variants={containerVariants}
           >
             <motion.div variants={itemVariants} className="mb-6 inline-block">
@@ -217,7 +207,7 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            <motion.h1 variants={itemVariants} className="mb-6 leading-tight">
+            <motion.h1 variants={itemVariants} className="mb-6 leading-tight text-4xl md:text-5xl font-bold">
               Abdelrahman Magdy
             </motion.h1>
 
@@ -228,13 +218,13 @@ const Hero = () => {
               <span className="highlight">{t('hero.highlight3')}</span> {t('hero.subtext')}
             </motion.h2>
 
-            <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 animate-reveal-text delay-300">
+            <motion.p variants={itemVariants} className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0">
               Transform Your Ideas into Digital Masterpieces with React, Next.js, and TypeScript!
             </motion.p>
 
             <motion.div 
               variants={itemVariants} 
-              className={`flex flex-col sm:flex-row items-center gap-4 ${dir === 'rtl' ? 'lg:justify-end' : 'lg:justify-start'} justify-center ${dir === 'rtl' ? 'sm:flex-row-reverse' : ''}`}
+              className={`flex flex-col sm:flex-row items-center gap-4 ${dir === 'rtl' ? 'lg:justify-end sm:flex-row-reverse' : 'lg:justify-start'} justify-center`}
             >
               <motion.div
                 variants={buttonVariants}
@@ -244,8 +234,6 @@ const Hero = () => {
                 <Button className="btn-primary group relative overflow-hidden">
                   {t('hero.cta1')}
                   <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
-                  
-                  {/* Ripple effect on hover */}
                   <span className="absolute top-0 left-0 w-full h-full">
                     <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
                   </span>
@@ -259,8 +247,6 @@ const Hero = () => {
               >
                 <Button variant="outline" className="btn-secondary group relative overflow-hidden">
                   {t('hero.cta2')}
-                  
-                  {/* Sparkle effect on hover */}
                   <span className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100">
                     {[...Array(5)].map((_, i) => (
                       <span 
@@ -273,7 +259,7 @@ const Hero = () => {
                           '--y': `${(Math.random() * 60 - 30)}px`,
                           animationDelay: `${i * 0.1}s`,
                           animationDuration: `${0.5 + Math.random()}s`
-                        } as React.CSSProperties}
+                        }}
                       />
                     ))}
                   </span>
@@ -283,8 +269,7 @@ const Hero = () => {
           </motion.div>
         </motion.div>
         
-        {/* Scroll indicator */}
-        <motion.div 
+        {/* <motion.div 
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
           animate={{ 
             y: [0, 10, 0],
@@ -298,7 +283,7 @@ const Hero = () => {
           <div className="w-6 h-10 rounded-full border-2 border-gray-400 flex justify-center pt-1">
             <div className="w-1 h-3 rounded-full bg-gray-400"></div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

@@ -58,7 +58,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
             className="block py-2 text-base font-medium hover:text-primary transition-colors"
             onClick={toggleMobileMenu}
           >
-            {t('nav.profile')}
+            {t('profile')}
           </Link>
           
           <Link 
@@ -66,7 +66,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
             className="block py-2 text-base font-medium hover:text-primary transition-colors"
             onClick={toggleMobileMenu}
           >
-            {t('nav.settings')}
+            {t('settings')}
           </Link>
           
           <button
@@ -78,7 +78,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
           >
             <div className="flex items-center space-x-2">
               <LogOut size={18} />
-              <span>{t('nav.signOut')}</span>
+              <span>{t('signOut')}</span>
             </div>
           </button>
         </div>
@@ -113,10 +113,10 @@ const AuthSection: React.FC<AuthSectionProps> = ({
             </div>
             <div className="py-1">
               <Link to="/profile" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
-                {t('nav.profile')}
+                {t('profile')}
               </Link>
               <Link to="/settings" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
-                {t('nav.settings')}
+                {t('settings')}
               </Link>
               <button
                 onClick={() => {
@@ -125,7 +125,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
                 }}
                 className="w-full text-left px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors"
               >
-                {t('nav.signOut')}
+                {t('signOut')}
               </button>
             </div>
           </motion.div>
@@ -144,7 +144,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
           onClick={toggleMobileMenu}
         >
           <LogIn size={18} />
-          <span>{t('nav.signIn')}</span>
+          <span>{t('signIn')}</span>
         </Link>
         
         <Link 
@@ -153,7 +153,7 @@ const AuthSection: React.FC<AuthSectionProps> = ({
           onClick={toggleMobileMenu}
         >
           <UserPlus size={18} />
-          <span>{t('nav.signUp')}</span>
+          <span>{t('signUp')}</span>
         </Link>
       </div>
     );
@@ -164,14 +164,14 @@ const AuthSection: React.FC<AuthSectionProps> = ({
       <motion.div variants={itemVariants}>
         <Link to="/signin" className="auth-button-outline" aria-label="Sign in to your account">
           <LogIn className="size-4" />
-          <span className="hidden sm:inline">{t('nav.signIn')}</span>
+          <span className="hidden sm:inline">{t('signIn')}</span>
         </Link>
       </motion.div>
       
       <motion.div variants={itemVariants}>
         <Link to="/signup" className="auth-button-primary" aria-label="Create a new account">
           <UserPlus className="size-4" />
-          <span className="hidden sm:inline">{t('nav.signUp')}</span>
+          <span className="hidden sm:inline">{t('signUp')}</span>
         </Link>
       </motion.div>
     </div>
