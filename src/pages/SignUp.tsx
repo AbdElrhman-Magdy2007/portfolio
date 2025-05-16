@@ -226,3 +226,6 @@ const SignUp = () => {
       <Footer />
     </div>
   );
+};
+
+export default SignUp;
