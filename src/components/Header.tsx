@@ -50,10 +50,10 @@ const Header = () => {
   const toggleProfileMenu = () => setIsProfileMenuOpen(!isProfileMenuOpen);
   
   const navItems = [
-    { name: t('nav.home'), href: '#home' },
+    { name: t('nav.home'), href: '/' },
     { name: t('nav.about'), href: '#about' },
     { name: t('nav.services'), href: '#services' },
-    { name: t('nav.projects'), href: '#projects' },
+    { name: t('nav.projects'), href: '/projects' },
     { name: t('nav.contact'), href: '#contact' }
   ];
   
@@ -113,12 +113,12 @@ const Header = () => {
         <div className="relative">
           <motion.button
             onClick={toggleProfileMenu}
-            className="flex items-center space-x-2 rounded-full bg-background p-1 border border-border hover:border-primary transition-colors"
+            className="user-avatar"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             aria-label="User profile menu"
           >
-            <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+            <div>
               {user?.name.charAt(0)}
             </div>
           </motion.button>
@@ -129,17 +129,17 @@ const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 mt-2 w-48 rounded-md bg-background/90 backdrop-blur-md border border-border shadow-lg z-50"
+              className="dropdown-menu"
             >
               <div className="px-4 py-3 border-b border-border">
                 <p className="text-sm font-medium">{user?.name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
               </div>
               <div className="py-1">
-                <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setIsProfileMenuOpen(false)}>
+                <Link to="/profile" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
                   {t('nav.profile')}
                 </Link>
-                <Link to="/settings" className="block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setIsProfileMenuOpen(false)}>
+                <Link to="/settings" className="dropdown-item" onClick={() => setIsProfileMenuOpen(false)}>
                   {t('nav.settings')}
                 </Link>
                 <button
@@ -161,32 +161,17 @@ const Header = () => {
     return (
       <div className={`flex items-center space-x-2 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
         <motion.div variants={itemVariants}>
-          <Button
-            variant="outline"
-            size="sm"
-            asChild
-            className="rounded-full border-primary text-primary hover:bg-primary/10"
-            aria-label="Sign in to your account"
-          >
-            <Link to="/signin" className="flex items-center gap-1">
-              <LogIn className="size-4" />
-              <span className="hidden sm:inline">{t('nav.signIn')}</span>
-            </Link>
-          </Button>
+          <Link to="/signin" className="auth-button-outline" aria-label="Sign in to your account">
+            <LogIn className="size-4" />
+            <span className="hidden sm:inline">{t('nav.signIn')}</span>
+          </Link>
         </motion.div>
         
         <motion.div variants={itemVariants}>
-          <Button
-            size="sm"
-            asChild
-            className="rounded-full"
-            aria-label="Create a new account"
-          >
-            <Link to="/signup" className="flex items-center gap-1">
-              <UserPlus className="size-4" />
-              <span className="hidden sm:inline">{t('nav.signUp')}</span>
-            </Link>
-          </Button>
+          <Link to="/signup" className="auth-button-primary" aria-label="Create a new account">
+            <UserPlus className="size-4" />
+            <span className="hidden sm:inline">{t('nav.signUp')}</span>
+          </Link>
         </motion.div>
       </div>
     );
@@ -198,12 +183,12 @@ const Header = () => {
       animate="visible"
       variants={navVariants}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'py-3 backdrop-blur-lg bg-background/80' : 'py-5 bg-transparent'
+        isScrolled ? 'py-3 backdrop-blur-lg bg-background/80 shadow-sm' : 'py-5 bg-transparent'
       }`}
     >
       <div className={`container flex items-center justify-between ${dir === 'rtl' ? 'flex-row-reverse' : ''}`}>
         {/* Logo */}
-        <motion.a href="#home" className="flex items-center" variants={logoVariants}>
+        <motion.a href="/" className="flex items-center" variants={logoVariants}>
           <h1 className="text-xl md:text-2xl font-bold font-heading">
             {["A", "b", "d", "e", "l", "r", "a", "h", "m", "a", "n"].map((letter, index) => (
               <motion.span 
@@ -218,7 +203,7 @@ const Header = () => {
             {["M", "a", "g", "d", "y"].map((letter, index) => (
               <motion.span 
                 key={`surname-${index}`}
-                className="text-white"
+                className="text-foreground"
                 variants={letterVariants}
               >
                 {letter}
@@ -230,14 +215,17 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className={`hidden md:flex items-center space-x-6 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
           {navItems.map((item) => (
-            <motion.a 
-              key={item.name}
-              href={item.href}
-              className="text-sm font-medium hover:text-primary transition-colors duration-200"
-              variants={itemVariants}
-            >
-              {item.name}
-            </motion.a>
+            <motion.div key={item.name} variants={itemVariants}>
+              {item.href.startsWith('/') ? (
+                <Link to={item.href} className="text-sm font-medium hover:text-primary transition-colors duration-200">
+                  {item.name}
+                </Link>
+              ) : (
+                <a href={item.href} className="text-sm font-medium hover:text-primary transition-colors duration-200">
+                  {item.name}
+                </a>
+              )}
+            </motion.div>
           ))}
           
           <div className={`flex items-center space-x-3 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
@@ -245,10 +233,10 @@ const Header = () => {
             
             <motion.button 
               onClick={toggleTheme} 
-              className="theme-toggle"
+              className="p-2 rounded-full hover:bg-accent/50 transition-colors"
               aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
               variants={itemVariants}
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, rotate: 15 }}
               whileTap={{ scale: 0.95 }}
             >
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -260,7 +248,7 @@ const Header = () => {
             >
               <motion.button 
                 onClick={toggleLanguageMenu}
-                className="language-toggle"
+                className="p-2 rounded-full hover:bg-accent/50 transition-colors"
                 aria-label="Change language"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
@@ -270,7 +258,7 @@ const Header = () => {
               
               {isLanguageMenuOpen && (
                 <motion.div 
-                  className="language-menu"
+                  className="dropdown-menu"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
@@ -279,7 +267,7 @@ const Header = () => {
                   {languages.map((lang) => (
                     <div 
                       key={lang.code}
-                      className={`language-item ${language === lang.code ? 'text-primary' : ''}`}
+                      className={`dropdown-item ${language === lang.code ? 'text-primary' : ''}`}
                       onClick={() => {
                         setLanguage(lang.code as any);
                         setIsLanguageMenuOpen(false);
@@ -305,7 +293,7 @@ const Header = () => {
         <div className={`md:hidden flex items-center space-x-3 ${dir === 'rtl' ? 'flex-row-reverse space-x-reverse' : ''}`}>
           <button 
             onClick={toggleTheme} 
-            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+            className="p-2 rounded-full hover:bg-accent/50 transition-colors"
             aria-label={theme === 'dark' ? "Switch to light mode" : "Switch to dark mode"}
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -313,7 +301,7 @@ const Header = () => {
           
           <button 
             onClick={toggleMobileMenu}
-            className="p-2 rounded-full hover:bg-white/10 transition-colors"
+            className="p-2 rounded-full hover:bg-accent/50 transition-colors"
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -323,7 +311,7 @@ const Header = () => {
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <motion.div 
-            className="md:hidden absolute top-full left-0 right-0 p-5 bg-background/95 backdrop-blur-lg border-b border-white/10"
+            className="md:hidden absolute top-full left-0 right-0 p-5 bg-background/95 backdrop-blur-lg border-b border-border"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -331,21 +319,32 @@ const Header = () => {
           >
             <nav className={`flex flex-col space-y-4 ${dir === 'rtl' ? 'text-right' : 'text-left'}`}>
               {navItems.map((item) => (
-                <a 
-                  key={item.name}
-                  href={item.href}
-                  className="text-base font-medium hover:text-primary transition-colors"
-                  onClick={toggleMobileMenu}
-                >
-                  {item.name}
-                </a>
+                <div key={item.name}>
+                  {item.href.startsWith('/') ? (
+                    <Link 
+                      to={item.href}
+                      className="text-base font-medium hover:text-primary transition-colors"
+                      onClick={toggleMobileMenu}
+                    >
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={item.href}
+                      className="text-base font-medium hover:text-primary transition-colors"
+                      onClick={toggleMobileMenu}
+                    >
+                      {item.name}
+                    </a>
+                  )}
+                </div>
               ))}
               
               {/* Mobile auth buttons */}
               {isLoggedIn ? (
                 <div className="pt-2 border-t border-border">
                   <div className="flex items-center space-x-3 mb-3">
-                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                    <div className="user-avatar">
                       {user?.name.charAt(0)}
                     </div>
                     <div>
@@ -423,11 +422,11 @@ const Header = () => {
                 </button>
                 
                 {isLanguageMenuOpen && (
-                  <div className="mt-2 bg-background/90 backdrop-blur-md border border-white/10 rounded-md overflow-hidden">
+                  <div className="mt-2 bg-card border border-border rounded-md overflow-hidden">
                     {languages.map((lang) => (
                       <button
                         key={lang.code}
-                        className={`block w-full text-left px-4 py-2 hover:bg-white/10 ${language === lang.code ? 'text-primary' : ''}`}
+                        className={`block w-full text-left px-4 py-2 hover:bg-accent ${language === lang.code ? 'text-primary' : ''}`}
                         onClick={() => {
                           setLanguage(lang.code as any);
                           setIsLanguageMenuOpen(false);

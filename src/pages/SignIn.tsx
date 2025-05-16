@@ -127,7 +127,7 @@ const SignIn = () => {
                         type="email" 
                         placeholder={t('form.emailPlaceholder')} 
                         {...field} 
-                        className="search-input"
+                        className="bg-card border-input"
                       />
                     </FormControl>
                     <FormMessage />
@@ -146,7 +146,7 @@ const SignIn = () => {
                         type="password" 
                         placeholder={t('form.passwordPlaceholder')} 
                         {...field} 
-                        className="search-input"
+                        className="bg-card border-input"
                       />
                     </FormControl>
                     <FormMessage />
@@ -162,7 +162,7 @@ const SignIn = () => {
               >
                 <Button 
                   type="submit" 
-                  className="w-full"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting ? t('form.submitting') : t('auth.signIn')}
