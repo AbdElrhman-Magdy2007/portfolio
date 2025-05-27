@@ -18,7 +18,7 @@ interface AuthState {
 
 /**
  * Enhanced authentication hook with persistent state and advanced features
- * This would ideally connect to Supabase or another backend service
+ * This would ideally connect to  or another backend service
  */
 export const useAuth = () => {
   const [state, setState] = useState<AuthState>({

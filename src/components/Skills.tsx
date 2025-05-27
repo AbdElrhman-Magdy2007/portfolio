@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
@@ -11,7 +10,7 @@ const Skills = () => {
     },
     {
       title: "Backend",
-      skills: ["Node.js", "Express", "Prisma", "PostgreSQL", "Supabase", "RESTful APIs"]
+      skills: ["Node.js", "Express", "Prisma", "PostgreSQL", "RESTful APIs"]
     },
     {
       title: "Tools & DevOps",
