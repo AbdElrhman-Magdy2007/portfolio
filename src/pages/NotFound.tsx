@@ -1,25 +1,48 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+'use client'
+
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { useLanguage } from '../components/LanguageProvider';
+import { Button } from '@/components/ui/button';
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+  const { t } = useLanguage();
+  const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-md w-full text-center space-y-8"
+      >
+        <div>
+          <h1 className="text-9xl font-bold text-primary">404</h1>
+          <h2 className="mt-6 text-3xl font-extrabold text-foreground">
+            {('title')}
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            {('description')}
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <Button
+            onClick={() => router.push('/')}
+            className="w-full"
+          >
+            {('backHome')}
+          </Button>
+          
+          <button
+            onClick={() => router.back()}
+            className="text-sm text-primary hover:text-primary/80"
+          >
+            {('goBack')}
+          </button>
+        </div>
+      </motion.div>
     </div>
   );
 };

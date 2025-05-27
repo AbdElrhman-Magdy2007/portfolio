@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
@@ -51,7 +51,7 @@ const Index = () => {
           const newDot = {
             x: e.clientX,
             y: e.clientY,
-            id: Date.now()
+            id: Date.now() + Math.random()
           };
           
           setCursorTrail(prevTrail => [...prevTrail, newDot]);
@@ -145,7 +145,7 @@ const Index = () => {
                 />
               ))}
               
-              <Header />
+              {/* <Header /> */}
               
               <main>
                 <Hero />
@@ -153,7 +153,7 @@ const Index = () => {
                 <Services />
                 <Skills />
                 <Projects />
-                <Testimonials />
+                {/* <Testimonials /> */}
                 <ContactForm />
               </main>
               

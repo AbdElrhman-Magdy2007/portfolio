@@ -24,7 +24,7 @@ const Logo: React.FC = () => {
   };
 
   return (
-    <motion.a href="/" className="flex items-center" variants={logoVariants}>
+    <motion.a href="/" className="flex items-center pl-4" variants={logoVariants}>
       <h1 className="text-xl md:text-2xl font-bold font-heading">
         {["A", "b", "d", "e", "l", "r", "a", "h", "m", "a", "n"].map((letter, index) => (
           <motion.span 

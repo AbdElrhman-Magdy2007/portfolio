@@ -1,25 +1,46 @@
+"use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Github, ArrowDown } from 'lucide-react';
-import { useLanguage } from './LanguageProvider';
-import projectsData from '../data/projects.json';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ExternalLink, Github } from "lucide-react";
+import { useLanguage } from "./LanguageProvider";
+import projectsData from "../data/projects.json";
+import Link from "next/link";
+
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+  link: string;
+  demoUrl?: string;
+  githubUrl?: string;
+  featured: boolean;
+}
+
+interface ProjectsData {
+  projects: Project[];
+}
 
 const Projects = () => {
+  const router = useRouter();
   const { t, language, dir } = useLanguage();
-  const featuredProjects = projectsData.filter(project => project.featured);
+  const featuredProjects = (projectsData as ProjectsData).projects.filter(
+    (project: Project) => project.featured
+  );
 
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2 }
-    }
+      transition: { staggerChildren: 0.2 },
+    },
   };
 
   const itemVariants = {
@@ -27,55 +48,59 @@ const Projects = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
-    }
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 120,
+        damping: 15,
+        duration: 0.7,
+      },
+    },
+    hover: {
+      // y: -10,
+      scale: 1.03,
+      // boxShadow: "0 20px 40px -10px rgba(45, 212, 191, 0.3)", // Teal-400 shadow
+      // transition: { duration: 0.3, ease: "easeOut" },
+    },
+  };
+
+  const buttonVariants = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 15,
-        duration: 0.7
-      }
-    },
-    hover: { 
-      y: -10,
-      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-      transition: { duration: 0.3, ease: "easeOut" }
-    }
-  };
-
-  const buttonVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        type: "spring",
         stiffness: 120,
         damping: 12,
-        duration: 0.6 
-      }
+        duration: 0.6,
+      },
     },
-    hover: { 
-      scale: 1.2,
-      boxShadow: "0 0 20px rgba(99, 102, 241, 0.6)",
-      transition: { duration: 0.3 }
+    hover: {
+      scale: 1.1,
+      // boxShadow: "0 0 15px rgba(45, 212, 191, 0.4)", // Teal-400 shadow
+      // transition: { duration: 0.3 },
     },
-    tap: { 
+    tap: {
       scale: 0.95,
-      transition: { duration: 0.2 }
-    }
+      transition: { duration: 0.2 },
+    },
   };
 
-  // For particle trail on button hover
+  // Particle trail for button hover
   const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 });
-  const [particles, setParticles] = React.useState<{ id: number, x: number, y: number }[]>([]);
+  const [particles, setParticles] = React.useState<
+    { id: number; x: number; y: number }[]
+  >([]);
   const buttonRef = React.useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -89,20 +114,20 @@ const Projects = () => {
       const newParticle = {
         id: Date.now(),
         x,
-        y
+        y,
       };
 
-      setParticles(prev => [...prev, newParticle]);
-      
+      setParticles((prev) => [...prev, newParticle]);
+
       // Remove particle after animation
       setTimeout(() => {
-        setParticles(prev => prev.filter(p => p.id !== newParticle.id));
-      }, 600);
+        setParticles((prev) => prev.filter((p) => p.id !== newParticle.id));
+      }, 800);
     }
   };
 
   return (
-    <section id="projects" className="py-20 relative overflow-hidden">
+    <section id="projects" className="py-20 relative overflow-hidden  from-gray-950 via-gray-900 to-teal-950">
       <div className="container px-4 mx-auto">
         <motion.div
           initial="hidden"
@@ -111,66 +136,101 @@ const Projects = () => {
           variants={containerVariants}
         >
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent mb-6">
+              {("featuredProjects") || "Featured Projects"}
+            </h2>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-              A showcase of my best work, demonstrating my expertise in building modern web applications.
+              {("projectsDescription") ||
+                "A showcase of my best work, demonstrating my expertise in building modern web applications."}
             </p>
-            <div className="h-1 w-24 bg-secondary mx-auto mt-6"></div>
+            <div className="h-1 w-24 bg-gradient-to-r from-teal-400 to-blue-400 mx-auto mt-6 rounded-full" />
           </motion.div>
 
-          <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          >
             {featuredProjects.map((project) => (
               <motion.div
                 key={project.id}
                 variants={cardVariants}
                 whileHover="hover"
-                className="glass-card overflow-hidden border border-white/5 hover:border-secondary/30 transition-all duration-300"
+                className="glass-card overflow-hidden rounded-xl border border-teal-500/30 hover:border-teal-400/50 bg-gray-900/10 backdrop-blur-xl transition-all duration-500"
+                role="article"
+                aria-labelledby={`project-title-${project.id}`}
               >
-                <Card className="border-0 bg-transparent h-full">
-                  <div className="relative overflow-hidden group">
-                    <div className="aspect-video w-full bg-gray-800 overflow-hidden">
-                      <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform group-hover:scale-105 group-hover:rotate-1 duration-500 group-hover:grayscale-0 grayscale-[30%]"
+                <Card className="border-0 bg-transparent h-full flex flex-col">
+                  <div className="relative overflow-hidden">
+                    <div className="aspect-[4/3] w-full bg-gray-800">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2"
+                        loading="lazy"
                       />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                      <div className="p-4 w-full flex justify-between items-center">
-                        <div className="flex gap-2">
-                          <motion.a 
-                            href={project.demoUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <ExternalLink className="h-5 w-5" />
-                          </motion.a>
-                          <motion.a 
-                            href={project.githubUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                            whileHover={{ scale: 1.15 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Github className="h-5 w-5" />
-                          </motion.a>
-                        </div>
-                      </div>
-                    </div>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                    />
                   </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-gray-300 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
+                  <CardContent className="p-6 flex flex-col flex-grow">
+                    <h3
+                      id={`project-title-${project.id}`}
+                      className="text-xl font-bold text-white mb-2 bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent"
+                    >
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-300 text-sm mb-4 line-clamp-3 flex-grow">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="bg-secondary/20 text-secondary">
+                        <Badge
+                          key={index}
+                          variant="secondary"
+                          className="bg-gradient-to-r from-coral-400 to-pink-400 text-white text-xs font-medium px-2.5 py-1 rounded-full backdrop-blur-md border border-coral-300/30"
+                        >
                           {tag}
                         </Badge>
                       ))}
+                    </div>
+                    <div className="flex gap-3 mt-auto">
+                      {project.demoUrl && (
+                        <motion.a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variants={buttonVariants}
+                          whileHover="hover"
+                          whileTap="tap"
+                          className="flex items-center justify-center px-4 py-2 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 text-white hover:from-teal-500 hover:to-teal-700 transition-all duration-300 border border-teal-400/30 backdrop-blur-md"
+                          aria-label={`View live demo for ${project.title}`}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Demo
+                        </motion.a>
+                      )}
+                      {project.githubUrl && (
+                        <motion.a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variants={buttonVariants}
+                          whileHover={{
+                            scale: 1.1,
+                            boxShadow: "0 0 15px rgba(251, 113, 133, 0.4)", // Coral-400 shadow
+                            transition: { duration: 0.3 },
+                          }}
+                          whileTap="tap"
+                          className="flex items-center justify-center px-4 py-2 rounded-full bg-gradient-to-r from-coral-400 to-coral-600 text-white hover:from-coral-500 hover:to-coral-700 transition-all duration-300 border border-coral-400/30 backdrop-blur-md"
+                          aria-label={`View GitHub repository for ${project.title}`}
+                        >
+                          <Github className="h-4 w-4 mr-2" />
+                          GitHub
+                        </motion.a>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -178,10 +238,7 @@ const Projects = () => {
             ))}
           </motion.div>
 
-          <motion.div 
-            variants={itemVariants} 
-            className="text-center"
-          >
+          <motion.div variants={itemVariants} className="text-center">
             <motion.div
               ref={buttonRef}
               variants={buttonVariants}
@@ -190,34 +247,47 @@ const Projects = () => {
               onMouseMove={handleMouseMove}
               className="inline-block relative"
             >
-              <Button 
-                className="btn-primary rounded-full px-8 py-6 text-lg font-medium relative overflow-hidden group"
-                asChild
-              >
-                <Link to="/projects">
-                  {t('projects.viewAll')}
-                  <ArrowDown className={`ml-2 group-hover:translate-y-1 transition-transform ${dir === 'rtl' ? 'mr-2 ml-0' : ''}`} size={18} />
-                  
-                  {/* Glow effect on hover */}
-                  <span className="absolute top-0 left-0 w-full h-full">
-                    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full bg-secondary opacity-0 group-hover:w-[150%] group-hover:h-[150%] group-hover:opacity-20 transition-all duration-500"></span>
+              <Link href="/projects">
+                <Button
+                  variant="outline"
+                  className="relative overflow-hidden rounded-full px-8 py-4 text-lg font-semibold bg-gradient-to-r from-teal-400/20 to-blue-400/20 hover:from-teal-400/30 hover:to-blue-400/30 border border-teal-400/50 backdrop-blur-md text-white shadow-lg hover:shadow-xl transition-all duration-500"
+                >
+                  {("viewAllProjects") || "View All Projects"}
+                  <span className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-600">
+                    {[...Array(10)].map((_, i) => (
+                      <span
+                        key={i}
+                        className="particle absolute w-3 h-3 rounded-full bg-gradient-to-r from-teal-400 to-coral-400"
+                        style={{
+                          top: `${Math.random() * 100}%`,
+                          left: `${Math.random() * 100}%`,
+                          "--x": `${Math.random() * 100 - 50}px`,
+                          "--y": `${Math.random() * 100 - 50}px`,
+                          animationDelay: `${i * 0.06}s`,
+                          animationDuration: `${0.7 + Math.random() * 0.5}s`,
+                        }}
+                      />
+                    ))}
                   </span>
-                </Link>
-              </Button>
-              
-              {/* Particle trail effect */}
+                </Button>
+              </Link>
               {particles.map((particle) => (
                 <motion.span
                   key={particle.id}
-                  className="absolute w-2 h-2 rounded-full bg-secondary"
-                  initial={{ opacity: 0.8, scale: 1, x: particle.x, y: particle.y }}
+                  className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-teal-400 to-coral-400"
+                  initial={{
+                    opacity: 0.8,
+                    scale: 1,
+                    x: particle.x,
+                    y: particle.y,
+                  }}
                   animate={{
                     opacity: 0,
                     scale: 0,
                     x: particle.x + (Math.random() * 60 - 30),
-                    y: particle.y + (Math.random() * 60 - 30)
+                    y: particle.y + (Math.random() * 60 - 30),
                   }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
                 />
               ))}
             </motion.div>
@@ -226,8 +296,8 @@ const Projects = () => {
       </div>
 
       {/* Background elements */}
-      <div className="absolute top-1/2 left-0 w-40 h-40 bg-secondary/10 rounded-full filter blur-3xl opacity-30"></div>
-      <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-primary/10 rounded-full filter blur-3xl opacity-30"></div>
+      <div className="absolute top-1/2 left-0 w-40 h-40 bg-teal-400/10 rounded-full filter blur-3xl opacity-30" />
+      <div className="absolute bottom-1/4 right-0 w-60 h-60 bg-coral-400/10 rounded-full filter blur-3xl opacity-30" />
     </section>
   );
 };

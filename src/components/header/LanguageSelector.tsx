@@ -67,7 +67,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ isMobile = false })
 
   return (
     <motion.div className="relative" variants={itemVariants}>
-      <motion.button 
+      {/* <motion.button 
         onClick={toggleLanguageMenu}
         className="p-2 rounded-full hover:bg-accent/50 transition-colors"
         aria-label="Change language"
@@ -99,7 +99,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ isMobile = false })
             </div>
           ))}
         </motion.div>
-      )}
+      )} */}
     </motion.div>
   );
 };

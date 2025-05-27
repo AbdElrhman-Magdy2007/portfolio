@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useLanguage } from '@/components/LanguageProvider';
 import { useTheme } from '@/components/ThemeProvider';
-import Header from '@/components/Header';
+// import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProjectsShowcase from '@/components/ProjectsShowcase';
 
@@ -152,7 +152,7 @@ const Projects = () => {
         />
       ))}
       
-      <Header />
+      {/* <Header /> */}
       
       <main className="relative z-10">
         <ProjectsShowcase />
